@@ -1,6 +1,7 @@
 
 create database if not exists taquilla;
 use taquilla;
+
 create table if not exists espectaculo (
     id_espectaculo int not null auto_increment,
     nombre varchar(40) not null,
