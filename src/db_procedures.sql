@@ -15,12 +15,20 @@ delimiter //
 
 create procedure ver_eventos (in limite int, in pagina int)
 begin
+DECLARE num int default 0;
+DECLARE min int default 0;
+DECLARE max int default 0;
+set num=pagina-1;
+set min=num*limite;
+set max=pagina*limite;
+select a.nombre, a.descripcion, a.tipo, b.nombre, c.inicio,c.estado from espectaculo a join recinto b join evento c on a.id_espectaculo=c.id_espectaculo and b.id_recinto=c.id_recinto where id_evento >min and id_evento <=max;
 
 end //
 
 create procedure buscar_evento (in nombre varchar(40))
 begin
-
+set nombre=concat('%',nombre,'%');
+select a.nombre, a.descripcion, a.tipo, b.nombre, c.inicio,c.estado from espectaculo a join recinto b join evento c on a.id_espectaculo=c.id_espectaculo and b.id_recinto=c.id_recinto  WHERE a.nombre like nombre;
 end //
 
 create procedure ver_gradas (in id_evento int)
