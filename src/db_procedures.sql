@@ -33,11 +33,17 @@ end //
 
 create procedure ver_gradas (in id_evento int)
 begin
-    select a.nombre, b.nombre, c.inicio,c.estado, d.nombre, e.nombre from espectaculo a
-        join recinto b join evento c join participante d join grada e
-        on a.id_espectaculo=e.id_espectaculo and b.id_recinto=e.id_recinto
-        and c.id_evento=e.id_evento and d.id_participante=e.id_participante
-        where id_evento=e.id_evento;
+    declare c int default 0;
+    select count(*) from evento e where e.id_evento = id_evento into c;
+    if c > 0 then
+        select a.nombre, b.nombre, c.inicio, c.estado, e.nombre from espectaculo a
+            left join grada e on a.id_espectaculo=e.id_espectaculo
+            left join recinto b on b.id_recinto=e.id_recinto
+            left join evento c on c.id_evento=e.id_evento
+            where id_evento=e.id_evento;
+    else
+        select 'Evento inexistente' as 'Error';
+    end if;
 end //
 
 create procedure ver_localidades (
