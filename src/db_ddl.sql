@@ -34,12 +34,10 @@ create table if not exists grada (
     id_espectaculo int not null,
     id_recinto int not null,
     id_evento int not null,
-    id_participante int not null,
     nombre varchar(40) not null,
     max_localidad int not null default 5,
-    primary key (id_grada, id_evento, id_recinto, id_espectaculo,id_participante),
+    primary key (id_grada, id_evento, id_recinto, id_espectaculo),
     foreign key (id_espectaculo) references espectaculo(id_espectaculo),
-    foreign key (id_participante) references participante(id_participante),
     foreign key (id_recinto) references recinto(id_recinto)
 );
 
