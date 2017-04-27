@@ -15,25 +15,29 @@ delimiter //
 
 create procedure ver_eventos (in limite int, in pagina int)
 begin
-DECLARE num int default 0;
-DECLARE min int default 0;
-DECLARE max int default 0;
-set num=pagina-1;
-set min=num*limite;
-set max=pagina*limite;
-select a.nombre, a.descripcion, a.tipo, b.nombre, c.inicio,c.estado from espectaculo a join recinto b join evento c on a.id_espectaculo=c.id_espectaculo and b.id_recinto=c.id_recinto where id_evento >min and id_evento <=max;
-
+    DECLARE off int default 0;
+    set off=pagina*limite;
+    select a.nombre, a.descripcion, a.tipo, b.nombre, c.inicio,c.estado from espectaculo a
+        left join evento c on a.id_espectaculo=c.id_espectaculo
+        left join recinto b on b.id_recinto=c.id_recinto
+        limit limite offset off;
 end //
 
 create procedure buscar_evento (in nombre varchar(40))
 begin
-set nombre=concat('%',nombre,'%');
-select a.nombre, a.descripcion, a.tipo, b.nombre, c.inicio,c.estado from espectaculo a join recinto b join evento c on a.id_espectaculo=c.id_espectaculo and b.id_recinto=c.id_recinto  WHERE a.nombre like nombre;
+    set nombre=concat('%',nombre,'%');
+    select a.nombre, a.descripcion, a.tipo, b.nombre, c.inicio,c.estado from espectaculo a
+        join recinto b join evento c on a.id_espectaculo=c.id_espectaculo and b.id_recinto=c.id_recinto
+        WHERE a.nombre like nombre;
 end //
 
 create procedure ver_gradas (in id_evento int)
 begin
-select a.nombre, b.nombre, c.inicio,c.estado, d.nombre, e.nombre from espectaculo a join recinto b join evento c join participante d join grada e on a.id_espectaculo=e.id_espectaculo and b.id_recinto=e.id_recinto and c.id_evento=e.id_evento and d.id_participante=e.id_participante where id_evento=e.id_evento;
+    select a.nombre, b.nombre, c.inicio,c.estado, d.nombre, e.nombre from espectaculo a
+        join recinto b join evento c join participante d join grada e
+        on a.id_espectaculo=e.id_espectaculo and b.id_recinto=e.id_recinto
+        and c.id_evento=e.id_evento and d.id_participante=e.id_participante
+        where id_evento=e.id_evento;
 end //
 
 create procedure ver_localidades (
@@ -60,12 +64,15 @@ create procedure crear_cliente (
     in cv int
 )
 begin
-insert into cliente(dni,nombre,apellido1,apellido2,direccion,cp,telefono,email,tarjeta,cad_mes,cad_anho,cv) values(dni,nombre,apellido1,apellido2,direccion,cp,telefono,email,tarjeta,cad_mes,cad_anho,cv);
+    insert into cliente(dni,nombre,apellido1,apellido2,direccion,cp,telefono,email,tarjeta,cad_mes,cad_anho,cv)
+        values(dni,nombre,apellido1,apellido2,direccion,cp,telefono,email,tarjeta,cad_mes,cad_anho,cv);
 end //
 
 create procedure consultar_usuario (in dni int)
 begin
-select dni,nombre,apellido1,apellido2,direccion,cp,telefono,email from cliente where cliente.dni=dni;
+    select dni,nombre,apellido1,apellido2,direccion,cp,telefono,email
+        from cliente
+        where cliente.dni=dni;
 end //
 
 create procedure prerreservar_localidad (
