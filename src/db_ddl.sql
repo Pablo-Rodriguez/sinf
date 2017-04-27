@@ -1,11 +1,13 @@
 
+drop database if exists taquilla;
 create database if not exists taquilla;
+
 use taquilla;
 
 create table if not exists espectaculo (
     id_espectaculo int not null auto_increment,
     nombre varchar(40) not null,
-    descripcion varchar(500),
+    descripcion varchar(500) not null default "",
     tipo varchar(40),
     primary key (id_espectaculo)
 );
