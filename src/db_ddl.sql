@@ -26,18 +26,8 @@ create table if not exists recinto (
 
 create table if not exists localidad (
     id_localidad int not null auto_increment,
-    primary key (id_localidad)
-);
-
-create table if not exists grada (
-    id_grada int not null auto_increment,
-    id_espectaculo int not null,
     id_recinto int not null,
-    id_evento int not null,
-    nombre varchar(40) not null,
-    max_localidad int not null default 5,
-    primary key (id_grada, id_evento, id_recinto, id_espectaculo),
-    foreign key (id_espectaculo) references espectaculo(id_espectaculo),
+    primary key (id_localidad),
     foreign key (id_recinto) references recinto(id_recinto)
 );
 
@@ -48,6 +38,19 @@ create table if not exists evento (
     inicio Date not null,
     estado varchar(15),
     primary key (id_evento, id_espectaculo, id_recinto),
+    foreign key (id_espectaculo) references espectaculo(id_espectaculo),
+    foreign key (id_recinto) references recinto(id_recinto)
+);
+
+create table if not exists grada (
+    id_grada int not null auto_increment,
+    id_espectaculo int not null,
+    id_recinto int not null,
+    id_evento int not null,
+    nombre varchar(40) not null,
+    max_localidad int not null default 5,
+    primary key (id_grada, id_evento, id_recinto, id_espectaculo),
+    foreign key (id_evento) references evento(id_evento),
     foreign key (id_espectaculo) references espectaculo(id_espectaculo),
     foreign key (id_recinto) references recinto(id_recinto)
 );
@@ -80,13 +83,6 @@ create table if not exists cliente (
     primary key (dni)
 );
 
-create table if not exists localidad_recinto (
-    id_localidad int not null,
-    id_recinto int not null,
-    foreign key (id_localidad) references localidad(id_localidad),
-    foreign key (id_recinto) references recinto(id_recinto)
-);
-
 create table if not exists localidad_grada (
     id_localidad int not null,
     id_grada int not null,
@@ -97,17 +93,9 @@ create table if not exists localidad_grada (
 
 create table if not exists precio (
     id_grada int not null,
-    id_localidad int not null,
-    id_evento int not null,
-    id_espectaculo int not null,
-    id_recinto int not null,
     tipo_usuario varchar(15) not null,
     precio numeric(6,2) not null,
-    foreign key (id_espectaculo) references espectaculo(id_espectaculo),
-    foreign key (id_recinto) references recinto(id_recinto),
-    foreign key (id_evento) references evento(id_evento),
     foreign key (id_grada) references grada(id_grada),
-    foreign key (id_localidad) references localidad(id_localidad),
     foreign key (tipo_usuario) references usuario(tipo)
 );
 

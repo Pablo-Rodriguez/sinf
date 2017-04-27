@@ -1,4 +1,5 @@
 use taquilla
+-- Espectaculos
 insert into espectaculo(nombre,descripcion,tipo) values('Circo Del Sol:Varekai','Espectáculo formado por los mejores gimnastas del mundo.','Circo');
 insert into espectaculo(nombre,descripcion,tipo) values('Concierto Guns n Roses','Único concierto del mítico grupo estadounidense en España este 2017.','Concierto');
 insert into espectaculo(nombre,descripcion,tipo) values('Celta de Vigo - Manchester United','Partido correspondiente a las semifinales de la UEL','Partido');
@@ -10,6 +11,7 @@ insert into espectaculo(nombre,tipo) values('El Rey León','Musical');
 insert into espectaculo(nombre,descripcion,tipo) values('Goyo Jiménez','Monólogo del famoso humorista','Monólogo');
 insert into espectaculo(nombre,descripcion,tipo) values('Fast and Furious 8','Última entrega de la saga.','Película');
 
+-- Participantes
 insert into participante(nombre) values ('Celta de Vigo');
 insert into participante(nombre) values('Real Madrid');
 insert into participante(nombre) values('Manchester United');
@@ -25,6 +27,7 @@ insert into participante(nombre) values('Kase O');
 insert into participante(nombre) values ('Bastille');
 insert into participante(nombre) values ('Leiva');
 
+-- Recintos
 insert into recinto(nombre) values ('Estadio de Balaídos');
 insert into recinto(nombre) values ('Estadio Santiago Bernabéu');
 insert into recinto(nombre) values ('Estadio de San Mamés');
@@ -35,6 +38,7 @@ insert into recinto(nombre) values('Cines Gran Vía');
 insert into recinto(nombre) values('Teatro A Fundación');
 insert into recinto(nombre) values('Burriana');
 
+-- Eventos
 insert into evento(id_espectaculo,id_recinto,inicio,estado) values (1,5,STR_TO_DATE('5-05-2017', '%d-%m-%Y'),'abierto');
 insert into evento(id_espectaculo,id_recinto,inicio,estado) values (2,3,STR_TO_DATE('6-06-2017', '%d-%m-%Y'),'abierto');
 insert into evento(id_espectaculo,id_recinto,inicio,estado) values (3,1,STR_TO_DATE('4-05-2017', '%d-%m-%Y'),'abierto');
@@ -46,6 +50,7 @@ insert into evento(id_espectaculo,id_recinto,inicio,estado) values (8,8,STR_TO_D
 insert into evento(id_espectaculo,id_recinto,inicio,estado) values (9,6,STR_TO_DATE('31-08-2017', '%d-%m-%Y'),'abierto');
 insert into evento(id_espectaculo,id_recinto,inicio,estado) values (10,7,STR_TO_DATE('3-05-2017', '%d-%m-%Y'),'abierto');
 
+-- Gradas
 insert into grada(id_espectaculo,id_recinto,id_evento,nombre) values(1,5,1,'Sector 100');
 insert into grada(id_espectaculo,id_recinto,id_evento,nombre) values(1,5,1,'Sector 101');
 insert into grada(id_espectaculo,id_recinto,id_evento,nombre) values(1,5,1,'Sector 102');
@@ -88,3 +93,33 @@ insert into grada(id_espectaculo,id_recinto,id_evento,nombre) values(8,8,8,'Palc
 insert into grada(id_espectaculo,id_recinto,id_evento,nombre) values(9,6,9,'Platea Alta');
 insert into grada(id_espectaculo,id_recinto,id_evento,nombre) values(9,8,8,'Platea Baja');
 insert into grada(id_espectaculo,id_recinto,id_evento,nombre) values(10,7,10,'General');
+
+-- Localidades
+insert into localidad(id_recinto) values
+    (1),
+    (1),
+    (1),
+    (1),
+    (1),
+    (1);
+
+-- Localidad-grada
+insert into localidad_grada(id_localidad, id_grada) values
+    (1, 11),
+    (2, 11),
+    (3, 12),
+    (4, 12),
+    (5, 13),
+    (6, 13);
+
+-- Usuarios
+insert into usuario(tipo) values ('jubilado'), ('infantil'), ('adulto'), ('parado'), ('bebe');
+
+-- Precio
+insert into precio(id_grada, tipo_usuario, precio) values
+    (11, 'adulto', 30),
+    (11, 'infantil', 15),
+    (11, 'parado', 15),
+    (11, 'jubilado', 15),
+    (12, 'adulto', 40),
+    (13, 'adulto', 40);

@@ -26,9 +26,10 @@ end //
 create procedure buscar_evento (in nombre varchar(40))
 begin
     set nombre=concat('%',nombre,'%');
-    select a.nombre, a.descripcion, a.tipo, b.nombre, c.inicio,c.estado from espectaculo a
-        join recinto b join evento c on a.id_espectaculo=c.id_espectaculo and b.id_recinto=c.id_recinto
-        WHERE a.nombre like nombre;
+    select c.id_evento 'id', a.nombre, a.descripcion, a.tipo, b.nombre, c.inicio, c.estado from espectaculo a
+        left join evento c on a.id_espectaculo=c.id_espectaculo
+        left join recinto b on b.id_recinto=c.id_recinto
+        where a.nombre like nombre;
 end //
 
 create procedure ver_gradas (in id_evento int)
@@ -36,23 +37,46 @@ begin
     declare c int default 0;
     select count(*) from evento e where e.id_evento = id_evento into c;
     if c > 0 then
-        select a.nombre, b.nombre, c.inicio, c.estado, e.nombre from espectaculo a
+        select e.id_grada 'id', e.nombre 'nombre', a.nombre, b.nombre, c.inicio, c.estado
+            from espectaculo a
             left join grada e on a.id_espectaculo=e.id_espectaculo
             left join recinto b on b.id_recinto=e.id_recinto
             left join evento c on c.id_evento=e.id_evento
             where id_evento=e.id_evento;
     else
-        select 'Evento inexistente' as 'Error';
+        select 'Evento inexistente' as 'error';
     end if;
 end //
 
 create procedure ver_localidades (
     in id_grada int,
     in tipo varchar(15),
-    out precio numeric(6, 2)
+    out precio_out numeric(6, 2)
 )
 begin
-
+    declare c int default 0;
+    select count(*) from grada g where g.id_grada = id_grada into c;
+    if c > 0 then
+        select count(*) from precio p
+            where p.id_grada = id_grada and p.tipo_usuario = tipo into c;
+        if c > 0 then
+            select p.precio from precio p
+                where p.id_grada = id_grada and p.tipo_usuario = tipo into c;
+            set precio_out = c;
+            select l.id_localidad, g.nombre 'grada', r.nombre 'recinto'
+                from localidad_grada lg
+                left join localidad l on lg.id_localidad = l.id_localidad
+                left join grada g on lg.id_grada = g.id_grada
+                left join recinto r on g.id_recinto = r.id_recinto
+                where g.id_grada = id_grada;
+        else
+            set precio_out = null;
+            select 'Usuario no disponible para esa grada' as 'error';
+        end if;
+    else
+        set precio_out = null;
+        select 'Grada inexistente' as 'error';
+    end if;
 end //
 
 create procedure crear_cliente (
