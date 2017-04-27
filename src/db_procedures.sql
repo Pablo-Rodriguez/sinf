@@ -33,7 +33,7 @@ end //
 
 create procedure ver_gradas (in id_evento int)
 begin
-
+select a.nombre, b.nombre, c.inicio,c.estado, d.nombre, e.nombre from espectaculo a join recinto b join evento c join participante d join grada e on a.id_espectaculo=e.id_espectaculo and b.id_recinto=e.id_recinto and c.id_evento=e.id_evento and d.id_participante=e.id_participante where id_evento=e.id_evento;
 end //
 
 create procedure ver_localidades (
@@ -60,12 +60,12 @@ create procedure crear_cliente (
     in cv int
 )
 begin
-
+insert into cliente(dni,nombre,apellido1,apellido2,direccion,cp,telefono,email,tarjeta,cad_mes,cad_anho,cv) values(dni,nombre,apellido1,apellido2,direccion,cp,telefono,email,tarjeta,cad_mes,cad_anho,cv);
 end //
 
 create procedure consultar_usuario (in dni int)
 begin
-
+select dni,nombre,apellido1,apellido2,direccion,cp,telefono,email from cliente where cliente.dni=dni;
 end //
 
 create procedure prerreservar_localidad (
