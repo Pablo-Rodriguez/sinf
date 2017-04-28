@@ -4,7 +4,7 @@ drop procedure if exists buscar_evento;
 drop procedure if exists ver_gradas;
 drop procedure if exists ver_localidades;
 drop procedure if exists crear_cliente;
-drop procedure if exists consultar_usuario;
+drop procedure if exists consultar_cliente;
 drop procedure if exists prerreservar_localidad;
 drop procedure if exists reservar_localidad;
 drop procedure if exists ver_localidades_prerreservadas;
@@ -108,11 +108,17 @@ begin
     end if;
 end //
 
-create procedure consultar_usuario (in dni int)
+create procedure consultar_cliente (in dni int)
 begin
-    select dni,nombre,apellido1,apellido2,direccion,cp,telefono,email
-        from cliente
-        where cliente.dni=dni;
+    declare c int default 0;
+    select count(*) from cliente cli where cli.dni = dni into c;
+    if c > 0 then
+        select dni,nombre,apellido1,apellido2,direccion,cp,telefono,email
+            from cliente
+            where cliente.dni=dni;
+    else
+        select 'Usuario inexistente' as 'error';
+    end if;
 end //
 
 create procedure prerreservar_localidad (
