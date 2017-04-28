@@ -232,12 +232,30 @@ begin
 end //
 
 create procedure anular_reserva (
-    in id_localidad int,
     in id_grada int,
+    in id_localidad int,
     in dni int
 )
 begin
-
+    declare c int default 0;
+    declare s varchar(15);
+    select count(*) from reserva r where
+    r.id_localidad = id_localidad and r.id_grada = id_grada and r.id_cliente = dni
+    into c;
+    if c > 0 then
+        select e.estado from grada g
+            left join evento e on g.id_evento = e.id_evento
+            where g.id_grada = id_grada into s;
+        if s = 'abierto' then
+            select null as 'error';
+            delete from reserva where
+                reserva.id_localidad = id_localidad and reserva.id_grada = id_grada and reserva.id_cliente = dni;
+        else
+            select 'Ya no se puede anular' as 'error';
+        end if;
+    else
+        select 'Reserva/prerreserva inexistente' as 'error';
+    end if;
 end //
 
 delimiter ;
