@@ -76,7 +76,7 @@ create table if not exists cliente (
     cp int not null,
     telefono int,
     email varchar(60) not null,
-    tarjeta int,
+    tarjeta varchar(20),
     cad_mes int,
     cad_anho int,
     cv int,

@@ -88,14 +88,24 @@ create procedure crear_cliente (
     in cp int,
     in telefono int,
     in email varchar(60),
-    in tarjeta int,
+    in tarjeta varchar(20),
     in cad_mes int,
     in cad_anho int,
     in cv int
 )
 begin
-    insert into cliente(dni,nombre,apellido1,apellido2,direccion,cp,telefono,email,tarjeta,cad_mes,cad_anho,cv)
-        values(dni,nombre,apellido1,apellido2,direccion,cp,telefono,email,tarjeta,cad_mes,cad_anho,cv);
+    declare c int default 0;
+    select count(*) from cliente cli where cli.dni = dni into c;
+    if c > 0 then
+        select 'Usuario ya existente' as 'error';
+    else
+        insert into cliente (
+            dni,nombre,apellido1,apellido2,direccion,cp,telefono,email,tarjeta,cad_mes,cad_anho,cv
+        ) values (
+            dni,nombre,apellido1,apellido2,direccion,cp,telefono,email,tarjeta,cad_mes,cad_anho,cv
+        );
+        select null as 'error';
+    end if;
 end //
 
 create procedure consultar_usuario (in dni int)
