@@ -86,7 +86,7 @@ create table if not exists cliente (
 create table if not exists localidad_grada (
     id_localidad int not null,
     id_grada int not null,
-    estado varchar(20) not null default "libre",
+    estado varchar(15) not null default "libre",
     foreign key (id_localidad) references localidad(id_localidad),
     foreign key (id_grada) references grada(id_grada)
 );
