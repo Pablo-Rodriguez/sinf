@@ -165,22 +165,70 @@ begin
 end //
 
 create procedure reservar_localidad (
-    in id_localidad int,
     in id_grada int,
+    in id_localidad int,
     in dni int
 )
 begin
-
+    declare c int default 0;
+    declare s varchar(15);
+    select count(*) from grada g where g.id_grada = id_grada into c;
+    if c > 0 then
+        select e.estado from grada g
+            left join evento e on g.id_evento = e.id_evento
+            where g.id_grada = id_grada into s;
+        if s = 'abierto' then
+            select count(*) from localidad_grada l
+                where l.id_localidad = id_localidad and l.id_grada = id_grada into c;
+            if c > 0 then
+                select estado from localidad_grada l
+                    where l.id_localidad = id_localidad into s;
+                if s = 'libre' then
+                    select count(*) from cliente c
+                        where c.dni = dni into c;
+                    if c > 0 then
+                        select null as 'error';
+                        insert into reserva(id_cliente, id_localidad, id_grada, tipo)
+                            values(dni, id_localidad, id_grada, 'reserva');
+                    else
+                        select 'Cliente inexistente' as 'error';
+                    end if;
+                else
+                    select 'Localidad no disponible' as 'error';
+                end if;
+            else
+                select 'Localidad inexistente' as 'error';
+            end if;
+        else
+            select 'Evento cerrado o finalizado' as 'error';
+        end if;
+    else
+        select 'Grada inexistente' as 'error';
+    end if;
 end //
 
 create procedure ver_localidades_prerreservadas (in dni int)
 begin
-
+    declare c int default 0;
+    select count(*) from cliente cli where cli.dni = dni into c;
+    if c > 0 then
+        select id_localidad, id_grada from reserva
+            where tipo = 'prerreserva' and id_cliente = dni;
+    else
+        select 'Usuario inexistente' as 'error';
+    end if;
 end //
 
 create procedure ver_localidades_reservadas (in dni int)
 begin
-
+    declare c int default 0;
+    select count(*) from cliente cli where cli.dni = dni into c;
+    if c > 0 then
+        select id_localidad, id_grada from reserva
+            where tipo = 'reserva' and id_cliente = dni;
+    else
+        select 'Usuario inexistente' as 'error';
+    end if;
 end //
 
 create procedure anular_reserva (
