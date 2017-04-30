@@ -194,7 +194,17 @@ begin
                         select 'Cliente inexistente' as 'error';
                     end if;
                 else
-                    select 'Localidad no disponible' as 'error';
+                    if s= 'prerreservado' then
+                        select count(*) from reserva r where r.id_cliente=dni and r.id_grada=id_grada and r.id_localidad=id_localidad and tipo='prerreserva' into c;
+                        if c=1 then
+                            select null as 'error';
+                            delete r from reserva  r where r.id_cliente=dni and r.id_grada=id_grada and r.id_localidad=id_localidad and tipo='prerreserva';
+                            insert into reserva(id_cliente, id_localidad, id_grada, tipo)
+                                    values(dni, id_localidad, id_grada, 'reserva');
+                        end if;
+                    else
+                        select 'Localidad no disponible' as 'error';
+                    end if;
                 end if;
             else
                 select 'Localidad inexistente' as 'error';
