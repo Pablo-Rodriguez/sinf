@@ -201,9 +201,11 @@ begin
                             delete r from reserva  r where r.id_cliente=dni and r.id_grada=id_grada and r.id_localidad=id_localidad and tipo='prerreserva';
                             insert into reserva(id_cliente, id_localidad, id_grada, tipo)
                                     values(dni, id_localidad, id_grada, 'reserva');
+                        else
+                            select 'Localidad no disponible' as 'error';
+
                         end if;
-                    else
-                        select 'Localidad no disponible' as 'error';
+
                     end if;
                 end if;
             else
