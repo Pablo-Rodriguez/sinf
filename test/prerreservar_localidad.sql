@@ -26,7 +26,7 @@ call prerreservar_localidad(11, 30, 39394823);
 call prerreservar_localidad(11, 3, 39394823);
 -- Grada inexistente
 call prerreservar_localidad(100, 1, 39394823);
--- Usuario inexistente
+-- Cliente inexistente
 call prerreservar_localidad(11, 2, 111111111);
 -- Evento cerrado o finalizado
 update evento set estado = 'cerrado' where id_evento = 3;

@@ -63,7 +63,7 @@ begin
             select p.precio from precio p
                 where p.id_grada = id_grada and p.tipo_usuario = tipo into c;
             set precio_out = c;
-            select l.id_localidad, g.nombre 'grada', r.nombre 'recinto'
+            select l.id_localidad, g.nombre 'grada', r.nombre 'recinto', lg.estado 'estado'
                 from localidad_grada lg
                 left join localidad l on lg.id_localidad = l.id_localidad
                 left join grada g on lg.id_grada = g.id_grada
@@ -203,9 +203,9 @@ begin
                                     values(dni, id_localidad, id_grada, 'reserva');
                         else
                             select 'Localidad no disponible' as 'error';
-
                         end if;
-
+                    else
+                        select 'Localidad no disponible' as 'error';
                     end if;
                 end if;
             else
@@ -224,7 +224,9 @@ begin
     declare c int default 0;
     select count(*) from cliente cli where cli.dni = dni into c;
     if c > 0 then
-        select id_localidad, id_grada from reserva
+        select r.id_localidad 'Localidad', r.id_grada 'Grada', re.nombre 'Recinto' from reserva r
+            left join grada g on r.id_grada = g.id_grada
+            left join recinto re on g.id_recinto = re.id_recinto
             where tipo = 'prerreserva' and id_cliente = dni;
     else
         select 'Usuario inexistente' as 'error';
@@ -236,7 +238,9 @@ begin
     declare c int default 0;
     select count(*) from cliente cli where cli.dni = dni into c;
     if c > 0 then
-        select id_localidad, id_grada from reserva
+        select r.id_localidad 'Localidad', r.id_grada 'Grada', re.nombre 'Recinto' from reserva r
+            left join grada g on r.id_grada = g.id_grada
+            left join recinto re on g.id_recinto = re.id_recinto
             where tipo = 'reserva' and id_cliente = dni;
     else
         select 'Usuario inexistente' as 'error';
