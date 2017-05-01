@@ -21,8 +21,8 @@ end //
 
 create trigger trigger_anulacion before delete on reserva for each row
 begin
-update localidad_grada
-set estado = 'libre' where id_localidad = OLD.id_localidad;
+    update localidad_grada
+    set estado = 'libre' where id_localidad = OLD.id_localidad;
 end //
 
 delimiter ;

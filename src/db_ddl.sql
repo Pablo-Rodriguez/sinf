@@ -104,6 +104,7 @@ create table if not exists reserva (
     id_localidad int not null,
     id_grada int not null,
     tipo varchar(20) not null,
+    fecha timestamp default now(),
     foreign key (id_grada) references grada(id_grada),
     foreign key (id_localidad) references localidad(id_localidad),
     foreign key (id_cliente) references cliente(dni)
