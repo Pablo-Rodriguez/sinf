@@ -18,7 +18,7 @@ call crear_cliente(
 
 -- Todo bien
 call prerreservar_localidad(11, 1, 39394823);
--- Localidad no disponible (ahora mismo no da error porque falta el trigger)
+-- Localidad no disponible
 call prerreservar_localidad(11, 1, 39394823);
 -- Localidad inexistente
 call prerreservar_localidad(11, 30, 39394823);

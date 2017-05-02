@@ -46,6 +46,7 @@ call prerreservar_localidad(11, 2, 39394823);
 call reservar_localidad(11, 2, 22222222);
 call reservar_localidad(11, 2, 39394823);
 -- Usuario inexistente
+call anular_reserva(11, 2, 39394823);
 call reservar_localidad(11, 2, 111111111);
 -- Evento cerrado o finalizado
 update evento set estado = 'cerrado' where id_evento = 3;

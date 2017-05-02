@@ -262,7 +262,7 @@ begin
         select e.estado from grada g
             left join evento e on g.id_evento = e.id_evento
             where g.id_grada = id_grada into s;
-        if s = 'abierto' then
+        if s = 'abierto' or s = 'cerrado' then
             select null as 'error';
             delete from reserva where
                 reserva.id_localidad = id_localidad and reserva.id_grada = id_grada and reserva.id_cliente = dni;

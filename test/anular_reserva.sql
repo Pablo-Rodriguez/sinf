@@ -22,7 +22,12 @@ call anular_reserva(11, 1, 39394823);
 -- No existe la reserva/prerreserva
 call anular_reserva(11, 1, 39394823);
 -- Evento cerrado
-call reservar_localidad(11, 1, 39394823);
-call ver_localidades_reservadas(39394823);
+call prerreservar_localidad(11, 1, 39394823);
+call ver_localidades_prerreservadas(39394823);
 update evento set estado = 'cerrado' where id_evento = 3;
+call anular_reserva(11, 1, 39394823);
+update evento set estado = 'abierto' where id_evento = 3;
+call prerreservar_localidad(11, 1, 39394823);
+call ver_localidades_prerreservadas(39394823);
+update evento set estado = 'finalizado' where id_evento = 3;
 call anular_reserva(11, 1, 39394823);
